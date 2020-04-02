@@ -36,6 +36,7 @@ echo "Bearer token:"
 echo ""
 kubectl get secret $(kubectl get sa dynatrace-monitoring -o jsonpath='{.secrets[0].name}' -n dynatrace) -o jsonpath='{.data.token}' -n dynatrace | base64 --decode
 echo ""
+echo ""
 
 API_ENDPOINT_URL=$(kubectl config view --minify -o jsonpath='{.clusters[0].cluster.server}')
 API_SERVER_PORT="$(echo $API_ENDPOINT_URL | sed -e "s/https:\/\///"):443"
@@ -47,7 +48,7 @@ if [ -d "./certificatek8s" ]
 then
     echo "Directory ./certificatek8s exists"
 else
-    echo "Creating directory ./certificatek8s..."s
+    echo "Creating directory ./certificatek8s..."
     mkdir certificatek8s
 fi
 

@@ -1,5 +1,8 @@
 #!/bin/bash
 
+exec > >(tee -i ./k8sinforesult.log)
+exec 2>&1
+
 echo ""
 echo "Verifying dynatrace namespace..."
 echo ""
@@ -55,4 +58,6 @@ fi
 echo ""
 echo "Saving kubernetes certificate..."
 echo Q | openssl s_client -connect $API_SERVER_PORT 2>/dev/null | openssl x509 -outform PEM > ./certificatek8s/dt_k8s_api.pem
+echo ""
+cat ./certificatek8s/dt_k8s_api.pem
 echo ""

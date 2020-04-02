@@ -1,5 +1,7 @@
 # k8sDynatrace
-scripts to integrate kubernetes cluster with dynatrace
+Scripts to integrate dynatrace operator with K8s Cluster, and also kubernetes cluster with dynatrace:
+
+[1-Credentials](https://github.com/yul14nrc/k8sDynatrace/tree/master/1-Credentials) Used to define the environment, API and Paas token from dynatrace
 
 To dynatrace can obtain metrics from Kubernetes API, you must add the Kubernetes cluster certificate to Dynatrace Active Gate.
 

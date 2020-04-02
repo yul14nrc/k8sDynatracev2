@@ -1,7 +1,24 @@
 #!/bin/bash
 
 echo ""
-echo "creating monitoring service account:"
+echo "Verifying dynatrace namespace..."
+echo ""
+
+ns=`kubectl get namespace dynatrace --no-headers --output=go-template={{.metadata.name}} 2>/dev/null`
+if [ -z "${ns}" ]; then
+  echo "Namespace dynatrace not found"
+  echo ""
+  echo "Creating namespace dynatrace:"
+  echo ""
+  kubectl create namespace dynatrace
+else
+  echo "Namespace dynatrace exists"
+  echo ""
+  echo "Using namespace dynatrace"
+fi
+
+echo ""
+echo "Creating monitoring service account:"
 
 echo ""
 kubectl apply -f ./kubernetes-monitoring-service-account.yaml

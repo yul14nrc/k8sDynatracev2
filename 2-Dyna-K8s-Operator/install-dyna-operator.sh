@@ -1,11 +1,29 @@
 #!/bin/bash
 
+exec > >(tee -i ./installdynaoperator.log)
+exec 2>&1
+
+echo ""
+echo "Verifying dynatrace namespace..."
+echo ""
+
+ns=`kubectl get namespace dynatrace --no-headers --output=go-template={{.metadata.name}} 2>/dev/null`
+if [ -z "${ns}" ]; then
+  echo "Namespace dynatrace not found"
+  echo ""
+  echo "Creating namespace dynatrace:"
+  echo ""
+  kubectl create namespace dynatrace
+else
+  echo "Namespace dynatrace exists"
+  echo ""
+  echo "Using namespace dynatrace"
+fi
+
 export API_TOKEN=$(cat ../1-Credentials/creds.json | jq -r '.dynatraceApiToken')
 export PAAS_TOKEN=$(cat ../1-Credentials/creds.json | jq -r '.dynatracePaaSToken')
 export TENANTID=$(cat ../1-Credentials/creds.json | jq -r '.dynatraceTenantID')
 export ENVIRONMENTID=$(cat ../1-Credentials/creds.json | jq -r '.dynatraceEnvironmentID')
-
-kubectl create namespace dynatrace
 
 LATEST_RELEASE=$(curl -s https://api.github.com/repos/dynatrace/dynatrace-oneagent-operator/releases/latest | grep tag_name | cut -d '"' -f 4)
 #LATEST_RELEASE=v0.3.1
